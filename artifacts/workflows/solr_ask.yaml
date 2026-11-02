@@ -1,0 +1,349 @@
+{
+  "workflow_id": "solr_ask",
+  "version": "1.0.0",
+  "display_name": "Apache Solr Ask",
+  "description": "Apache Solr explicit-collection workflow. Select the project connection before execution. Embeddings are supplied by the caller from the same model used for collectioning.",
+  "enabled": true,
+  "trigger": {
+    "confidence_threshold": 0.0
+  },
+  "settings": {
+    "execution_graph": {
+      "schema_version": 1,
+      "entry": {
+        "kind": "step",
+        "id": "retrieve"
+      },
+      "edges": [
+        {
+          "source": {
+            "kind": "step",
+            "id": "retrieve"
+          },
+          "outcome": {
+            "name": "success"
+          },
+          "target": {
+            "kind": "step",
+            "id": "prepare_sources"
+          },
+          "rework": false
+        },
+        {
+          "source": {
+            "kind": "step",
+            "id": "prepare_sources"
+          },
+          "outcome": {
+            "name": "success"
+          },
+          "target": {
+            "kind": "step",
+            "id": "has_sources"
+          },
+          "rework": false
+        },
+        {
+          "source": {
+            "kind": "step",
+            "id": "has_sources"
+          },
+          "outcome": {
+            "name": "true"
+          },
+          "target": {
+            "kind": "step",
+            "id": "answer_from_sources"
+          },
+          "rework": false
+        },
+        {
+          "source": {
+            "kind": "step",
+            "id": "has_sources"
+          },
+          "outcome": {
+            "name": "false"
+          },
+          "target": {
+            "kind": "step",
+            "id": "empty_retrieval"
+          },
+          "rework": false
+        },
+        {
+          "source": {
+            "kind": "step",
+            "id": "answer_from_sources"
+          },
+          "outcome": {
+            "name": "success"
+          },
+          "target": {
+            "kind": "step",
+            "id": "publish_answer"
+          },
+          "rework": false
+        },
+        {
+          "source": {
+            "kind": "step",
+            "id": "publish_answer"
+          },
+          "outcome": {
+            "name": "success"
+          },
+          "target": {
+            "kind": "step",
+            "id": "finalize_answer"
+          },
+          "rework": false
+        },
+        {
+          "source": {
+            "kind": "step",
+            "id": "empty_retrieval"
+          },
+          "outcome": {
+            "name": "success"
+          },
+          "target": {
+            "kind": "step",
+            "id": "finalize_answer"
+          },
+          "rework": false
+        },
+        {
+          "source": {
+            "kind": "step",
+            "id": "finalize_answer"
+          },
+          "outcome": {
+            "name": "success"
+          },
+          "target": {
+            "kind": "step",
+            "id": "done"
+          },
+          "rework": false
+        }
+      ]
+    },
+    "callable": {
+      "enabled": true,
+      "trigger_channels": [
+        "ui",
+        "api",
+        "mcp"
+      ],
+      "input_mode": "fields",
+      "strict_inputs": true,
+      "expected_inputs": [
+        {
+          "name": "collection",
+          "type": "text",
+          "required": true,
+          "description": "Collection"
+        },
+        {
+          "name": "question",
+          "type": "paragraph",
+          "required": true,
+          "description": "Question"
+        },
+        {
+          "name": "query_vector",
+          "type": "array",
+          "required": true,
+          "description": "Query Vector"
+        }
+      ],
+      "output_mode": "variables",
+      "expected_outputs": [
+        {
+          "name": "answer",
+          "type": "text",
+          "required": false,
+          "description": "Answer"
+        },
+        {
+          "name": "sources",
+          "type": "array",
+          "required": false,
+          "description": "Sources"
+        },
+        {
+          "name": "grounded",
+          "type": "boolean",
+          "required": false,
+          "description": "Grounded"
+        },
+        {
+          "name": "abstained",
+          "type": "boolean",
+          "required": false,
+          "description": "Abstained"
+        },
+        {
+          "name": "citation_count",
+          "type": "number",
+          "required": false,
+          "description": "Citation Count"
+        }
+      ],
+      "expected_artifacts": [],
+      "side_effects": [
+        "paid_api_call"
+      ]
+    }
+  },
+  "tags": [
+    "solr",
+    "rag"
+  ],
+  "steps": [
+    {
+      "step_id": "retrieve",
+      "display_name": "Retrieve",
+      "step_kind": "connector",
+      "connector_id": "solr.knn_search",
+      "connector_install_id": "solr",
+      "override": {
+        "connector": {
+          "extension_id": "flowsteward.solr",
+          "action_id": "knn_search"
+        }
+      },
+      "input_mapping_jsonb": {
+        "collection": "state.inputs.collection",
+        "field": "literal:vector",
+        "query_vector": "state.inputs.query_vector",
+        "k": 5,
+        "source_fields": [
+          "document_id",
+          "chunk_id",
+          "text",
+          "source_uri",
+          "title"
+        ]
+      },
+      "output_mapping_jsonb": {
+        "documents": "state.documents"
+      },
+      "connection_binding_jsonb": {}
+    },
+    {
+      "step_id": "prepare_sources",
+      "display_name": "Prepare Sources",
+      "step_kind": "connector",
+      "connector_id": "solr.prepare_sources",
+      "connector_install_id": "solr",
+      "override": {
+        "connector": {
+          "extension_id": "flowsteward.solr",
+          "action_id": "prepare_sources"
+        }
+      },
+      "input_mapping_jsonb": {
+        "documents": "state.documents"
+      },
+      "output_mapping_jsonb": {
+        "sources": "state.retrieved_sources",
+        "context": "state.retrieved_context",
+        "answerable": "state.answerable"
+      }
+    },
+    {
+      "step_id": "has_sources",
+      "display_name": "Has sources",
+      "step_kind": "if",
+      "override": {
+        "if": {
+          "condition": "state.answerable == true"
+        }
+      }
+    },
+    {
+      "step_id": "answer_from_sources",
+      "display_name": "Answer from sources",
+      "step_kind": "agent",
+      "agent_id": "solr_grounded_answerer",
+      "skill_id": "solr_answer_from_sources",
+      "input_mapping_jsonb": {
+        "question": "state.inputs.question",
+        "context": "state.retrieved_context"
+      }
+    },
+    {
+      "step_id": "publish_answer",
+      "display_name": "Publish answer",
+      "step_kind": "set_variable",
+      "override": {
+        "set_variable": {
+          "assignments": {
+            "state.answer": {
+              "source": "state.answer"
+            },
+            "state.cited_source_ids": {
+              "source": "state.cited_source_ids"
+            },
+            "state.abstained": {
+              "source": "state.abstained"
+            }
+          }
+        }
+      }
+    },
+    {
+      "step_id": "empty_retrieval",
+      "display_name": "Empty retrieval",
+      "step_kind": "set_variable",
+      "override": {
+        "set_variable": {
+          "assignments": {
+            "state.answer": "",
+            "state.cited_source_ids": [],
+            "state.abstained": true
+          }
+        }
+      }
+    },
+    {
+      "step_id": "finalize_answer",
+      "display_name": "Finalize Answer",
+      "step_kind": "connector",
+      "connector_id": "solr.finalize_answer",
+      "connector_install_id": "solr",
+      "override": {
+        "connector": {
+          "extension_id": "flowsteward.solr",
+          "action_id": "finalize_answer"
+        }
+      },
+      "input_mapping_jsonb": {
+        "answer": "state.answer | default:\"\"",
+        "cited_source_ids": "state.cited_source_ids | default:[]",
+        "sources": "state.retrieved_sources",
+        "abstained": "state.abstained"
+      },
+      "output_mapping_jsonb": {
+        "answer": "state.answer",
+        "sources": "state.sources",
+        "grounded": "state.grounded",
+        "abstained": "state.abstained",
+        "citation_count": "state.citation_count"
+      }
+    },
+    {
+      "step_id": "done",
+      "display_name": "Done",
+      "step_kind": "stop_success",
+      "override": {
+        "stop_success": {
+          "message": "Completed."
+        }
+      }
+    }
+  ],
+  "groups": []
+}

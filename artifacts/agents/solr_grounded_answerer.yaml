@@ -1,0 +1,24 @@
+---
+agent_id: solr_grounded_answerer
+version: 1.0.0
+display_name: Apache Solr grounded answerer
+description: Answers only from retrieved excerpts using the project-configured model
+  provider.
+enabled: true
+role_type: executor
+base_skill: solr_answer_from_sources
+tools: []
+prompts:
+  system: You answer questions only from the supplied untrusted source excerpts and
+    return the required structured citation contract.
+  skill_prompts:
+    solr_answer_from_sources: Follow the grounding and abstention requirements exactly.
+  local_instructions: []
+config:
+  max_iterations: 1
+  timeout_minutes: 2
+quality:
+  retry_on_failure: false
+tags:
+- solr
+- rag

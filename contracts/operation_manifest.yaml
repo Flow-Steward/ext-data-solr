@@ -1,0 +1,733 @@
+{
+  "operations": [
+    {
+      "operation_id": "get_document",
+      "display_name": "Get Document",
+      "description": "Get document.",
+      "operation_kind": "action",
+      "workflow_visible": true,
+      "connection_type_ids": [
+        "solr"
+      ],
+      "category": "data",
+      "inputs": [
+        {
+          "name": "connection_ref",
+          "value_type": "connection_ref",
+          "required": true,
+          "display_name": "Connection Ref"
+        },
+        {
+          "name": "collection",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Collection"
+        },
+        {
+          "name": "document_id",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Document Id"
+        },
+        {
+          "name": "source_fields",
+          "value_type": "json",
+          "required": true,
+          "display_name": "Source Fields",
+          "schema": {
+            "type": "array",
+            "maxItems": 100
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "documents",
+          "value_type": "json"
+        },
+        {
+          "name": "count",
+          "value_type": "integer"
+        },
+        {
+          "name": "found",
+          "value_type": "boolean"
+        },
+        {
+          "name": "applied",
+          "value_type": "boolean"
+        }
+      ],
+      "result_fields": [
+        "result.documents",
+        "result.count",
+        "result.found",
+        "result.applied"
+      ],
+      "error_codes": [
+        "invalid_payload",
+        "invalid_connection",
+        "effect_claim_required",
+        "test_mode_suppressed",
+        "authentication_failed",
+        "provider_unavailable",
+        "invalid_provider_response",
+        "response_too_large",
+        "network_blocked",
+        "timeout",
+        "not_found",
+        "unsupported_vector_mapping"
+      ]
+    },
+    {
+      "operation_id": "search",
+      "display_name": "Search",
+      "description": "Search.",
+      "operation_kind": "action",
+      "workflow_visible": true,
+      "connection_type_ids": [
+        "solr"
+      ],
+      "category": "data",
+      "inputs": [
+        {
+          "name": "connection_ref",
+          "value_type": "connection_ref",
+          "required": true,
+          "display_name": "Connection Ref"
+        },
+        {
+          "name": "collection",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Collection"
+        },
+        {
+          "name": "query",
+          "value_type": "json",
+          "required": false,
+          "display_name": "Query"
+        },
+        {
+          "name": "source_fields",
+          "value_type": "json",
+          "required": true,
+          "display_name": "Source Fields",
+          "schema": {
+            "type": "array",
+            "maxItems": 100
+          }
+        },
+        {
+          "name": "sort",
+          "value_type": "json",
+          "required": false,
+          "display_name": "Sort",
+          "schema": {
+            "type": "array",
+            "maxItems": 100
+          }
+        },
+        {
+          "name": "size",
+          "value_type": "integer",
+          "required": false,
+          "display_name": "Size"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "documents",
+          "value_type": "json"
+        },
+        {
+          "name": "count",
+          "value_type": "integer"
+        },
+        {
+          "name": "found",
+          "value_type": "boolean"
+        },
+        {
+          "name": "applied",
+          "value_type": "boolean"
+        }
+      ],
+      "result_fields": [
+        "result.documents",
+        "result.count",
+        "result.found",
+        "result.applied"
+      ],
+      "error_codes": [
+        "invalid_payload",
+        "invalid_connection",
+        "effect_claim_required",
+        "test_mode_suppressed",
+        "authentication_failed",
+        "provider_unavailable",
+        "invalid_provider_response",
+        "response_too_large",
+        "network_blocked",
+        "timeout",
+        "not_found",
+        "unsupported_vector_mapping"
+      ]
+    },
+    {
+      "operation_id": "upsert_document",
+      "display_name": "Upsert Document",
+      "description": "Upsert document.",
+      "operation_kind": "action",
+      "workflow_visible": true,
+      "connection_type_ids": [
+        "solr"
+      ],
+      "category": "data",
+      "inputs": [
+        {
+          "name": "connection_ref",
+          "value_type": "connection_ref",
+          "required": true,
+          "display_name": "Connection Ref"
+        },
+        {
+          "name": "collection",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Collection"
+        },
+        {
+          "name": "document_id",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Document Id"
+        },
+        {
+          "name": "document",
+          "value_type": "json",
+          "required": true,
+          "display_name": "Document"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "applied",
+          "value_type": "boolean"
+        },
+        {
+          "name": "document_id",
+          "value_type": "text"
+        },
+        {
+          "name": "result",
+          "value_type": "text"
+        }
+      ],
+      "result_fields": [
+        "result.applied",
+        "result.document_id",
+        "result.result"
+      ],
+      "error_codes": [
+        "invalid_payload",
+        "invalid_connection",
+        "effect_claim_required",
+        "test_mode_suppressed",
+        "authentication_failed",
+        "provider_unavailable",
+        "invalid_provider_response",
+        "response_too_large",
+        "network_blocked",
+        "timeout",
+        "not_found",
+        "unsupported_vector_mapping"
+      ]
+    },
+    {
+      "operation_id": "upsert_documents",
+      "display_name": "Upsert Documents",
+      "description": "Replace 1\u2013100 documents by their actual unique key.",
+      "operation_kind": "action",
+      "workflow_visible": true,
+      "connection_type_ids": [
+        "solr"
+      ],
+      "category": "data",
+      "inputs": [
+        {
+          "name": "connection_ref",
+          "value_type": "connection_ref",
+          "required": true,
+          "display_name": "Connection Ref"
+        },
+        {
+          "name": "collection",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Collection"
+        },
+        {
+          "name": "documents",
+          "value_type": "json",
+          "required": true,
+          "display_name": "Documents",
+          "schema": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "applied",
+          "value_type": "boolean"
+        },
+        {
+          "name": "result",
+          "value_type": "text"
+        }
+      ],
+      "result_fields": [
+        "result.applied",
+        "result.result"
+      ],
+      "error_codes": [
+        "invalid_payload",
+        "invalid_connection",
+        "effect_claim_required",
+        "test_mode_suppressed",
+        "authentication_failed",
+        "provider_unavailable",
+        "invalid_provider_response",
+        "response_too_large",
+        "network_blocked",
+        "timeout",
+        "not_found",
+        "unsupported_vector_mapping"
+      ]
+    },
+    {
+      "operation_id": "update_document",
+      "display_name": "Update Document",
+      "description": "Update document.",
+      "operation_kind": "action",
+      "workflow_visible": true,
+      "connection_type_ids": [
+        "solr"
+      ],
+      "category": "data",
+      "inputs": [
+        {
+          "name": "connection_ref",
+          "value_type": "connection_ref",
+          "required": true,
+          "display_name": "Connection Ref"
+        },
+        {
+          "name": "collection",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Collection"
+        },
+        {
+          "name": "document_id",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Document Id"
+        },
+        {
+          "name": "doc",
+          "value_type": "json",
+          "required": true,
+          "display_name": "Doc"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "applied",
+          "value_type": "boolean"
+        },
+        {
+          "name": "document_id",
+          "value_type": "text"
+        },
+        {
+          "name": "result",
+          "value_type": "text"
+        }
+      ],
+      "result_fields": [
+        "result.applied",
+        "result.document_id",
+        "result.result"
+      ],
+      "error_codes": [
+        "invalid_payload",
+        "invalid_connection",
+        "effect_claim_required",
+        "test_mode_suppressed",
+        "authentication_failed",
+        "provider_unavailable",
+        "invalid_provider_response",
+        "response_too_large",
+        "network_blocked",
+        "timeout",
+        "not_found",
+        "unsupported_vector_mapping"
+      ]
+    },
+    {
+      "operation_id": "delete_document",
+      "display_name": "Delete Document",
+      "description": "Delete document.",
+      "operation_kind": "action",
+      "workflow_visible": true,
+      "connection_type_ids": [
+        "solr"
+      ],
+      "category": "data",
+      "inputs": [
+        {
+          "name": "connection_ref",
+          "value_type": "connection_ref",
+          "required": true,
+          "display_name": "Connection Ref"
+        },
+        {
+          "name": "collection",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Collection"
+        },
+        {
+          "name": "document_id",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Document Id"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "applied",
+          "value_type": "boolean"
+        },
+        {
+          "name": "document_id",
+          "value_type": "text"
+        },
+        {
+          "name": "result",
+          "value_type": "text"
+        }
+      ],
+      "result_fields": [
+        "result.applied",
+        "result.document_id",
+        "result.result"
+      ],
+      "error_codes": [
+        "invalid_payload",
+        "invalid_connection",
+        "effect_claim_required",
+        "test_mode_suppressed",
+        "authentication_failed",
+        "provider_unavailable",
+        "invalid_provider_response",
+        "response_too_large",
+        "network_blocked",
+        "timeout",
+        "not_found",
+        "unsupported_vector_mapping"
+      ]
+    },
+    {
+      "operation_id": "knn_search",
+      "display_name": "Knn Search",
+      "description": "Knn search.",
+      "operation_kind": "action",
+      "workflow_visible": true,
+      "connection_type_ids": [
+        "solr"
+      ],
+      "category": "data",
+      "inputs": [
+        {
+          "name": "connection_ref",
+          "value_type": "connection_ref",
+          "required": true,
+          "display_name": "Connection Ref"
+        },
+        {
+          "name": "collection",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Collection"
+        },
+        {
+          "name": "field",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Field"
+        },
+        {
+          "name": "query_vector",
+          "value_type": "json",
+          "required": true,
+          "display_name": "Query Vector",
+          "schema": {
+            "type": "array",
+            "maxItems": 4096
+          }
+        },
+        {
+          "name": "k",
+          "value_type": "integer",
+          "required": false,
+          "display_name": "K"
+        },
+        {
+          "name": "filter",
+          "value_type": "json",
+          "required": false,
+          "display_name": "Filter"
+        },
+        {
+          "name": "source_fields",
+          "value_type": "json",
+          "required": true,
+          "display_name": "Source Fields",
+          "schema": {
+            "type": "array",
+            "maxItems": 100
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "documents",
+          "value_type": "json"
+        },
+        {
+          "name": "count",
+          "value_type": "integer"
+        },
+        {
+          "name": "found",
+          "value_type": "boolean"
+        },
+        {
+          "name": "applied",
+          "value_type": "boolean"
+        }
+      ],
+      "result_fields": [
+        "result.documents",
+        "result.count",
+        "result.found",
+        "result.applied"
+      ],
+      "error_codes": [
+        "invalid_payload",
+        "invalid_connection",
+        "effect_claim_required",
+        "test_mode_suppressed",
+        "authentication_failed",
+        "provider_unavailable",
+        "invalid_provider_response",
+        "response_too_large",
+        "network_blocked",
+        "timeout",
+        "not_found",
+        "unsupported_vector_mapping"
+      ]
+    },
+    {
+      "operation_id": "prepare_chunk",
+      "display_name": "Prepare Chunk",
+      "description": "Prepare Chunk. No embedding calls.",
+      "operation_kind": "action",
+      "workflow_visible": true,
+      "connection_type_ids": [],
+      "category": "data",
+      "inputs": [
+        {
+          "name": "document_id",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Document Id"
+        },
+        {
+          "name": "chunk_id",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Chunk Id"
+        },
+        {
+          "name": "text",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Text"
+        },
+        {
+          "name": "source_uri",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Source Uri"
+        },
+        {
+          "name": "title",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Title"
+        },
+        {
+          "name": "vector",
+          "value_type": "json",
+          "required": true,
+          "display_name": "Vector",
+          "schema": {
+            "type": "array",
+            "maxItems": 4096
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "document_id",
+          "value_type": "text"
+        },
+        {
+          "name": "document",
+          "value_type": "json"
+        }
+      ],
+      "result_fields": [
+        "result.document_id",
+        "result.document"
+      ],
+      "error_codes": [
+        "invalid_payload"
+      ]
+    },
+    {
+      "operation_id": "prepare_sources",
+      "display_name": "Prepare Sources",
+      "description": "Prepare Sources. No embedding calls.",
+      "operation_kind": "action",
+      "workflow_visible": true,
+      "connection_type_ids": [],
+      "category": "data",
+      "inputs": [
+        {
+          "name": "documents",
+          "value_type": "json",
+          "required": true,
+          "display_name": "Documents",
+          "schema": {
+            "type": "array",
+            "maxItems": 100
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "sources",
+          "value_type": "json"
+        },
+        {
+          "name": "context",
+          "value_type": "text"
+        },
+        {
+          "name": "answerable",
+          "value_type": "boolean"
+        }
+      ],
+      "result_fields": [
+        "result.sources",
+        "result.context",
+        "result.answerable"
+      ],
+      "error_codes": [
+        "invalid_payload"
+      ]
+    },
+    {
+      "operation_id": "finalize_answer",
+      "display_name": "Finalize Answer",
+      "description": "Finalize Answer. No embedding calls.",
+      "operation_kind": "action",
+      "workflow_visible": true,
+      "connection_type_ids": [],
+      "category": "data",
+      "inputs": [
+        {
+          "name": "answer",
+          "value_type": "text",
+          "required": true,
+          "display_name": "Answer"
+        },
+        {
+          "name": "cited_source_ids",
+          "value_type": "json",
+          "required": true,
+          "display_name": "Cited Source Ids",
+          "schema": {
+            "type": "array",
+            "maxItems": 100
+          }
+        },
+        {
+          "name": "sources",
+          "value_type": "json",
+          "required": true,
+          "display_name": "Sources",
+          "schema": {
+            "type": "array",
+            "maxItems": 100
+          }
+        },
+        {
+          "name": "abstained",
+          "value_type": "boolean",
+          "required": false,
+          "display_name": "Abstained"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "answer",
+          "value_type": "text"
+        },
+        {
+          "name": "sources",
+          "value_type": "json"
+        },
+        {
+          "name": "grounded",
+          "value_type": "boolean"
+        },
+        {
+          "name": "abstained",
+          "value_type": "boolean"
+        },
+        {
+          "name": "citation_count",
+          "value_type": "integer"
+        }
+      ],
+      "result_fields": [
+        "result.answer",
+        "result.sources",
+        "result.grounded",
+        "result.abstained",
+        "result.citation_count"
+      ],
+      "error_codes": [
+        "invalid_payload"
+      ]
+    }
+  ]
+}

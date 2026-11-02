@@ -1,0 +1,232 @@
+{
+  "manifest_version": 2,
+  "extension_id": "flowsteward.solr",
+  "kind": "tool_provider",
+  "version": "1.0.0",
+  "release_stage": "active",
+  "display_name": "Apache Solr",
+  "description": "Direct Apache Solr document, vector and read-only Dataset operations.",
+  "lifecycle": {
+    "data_schema_version": 1,
+    "data_migrations": []
+  },
+  "vendor": {
+    "name": "Flow Steward"
+  },
+  "listing": {
+    "category": "data",
+    "tags": [
+      "solr",
+      "database",
+      "vector",
+      "rag"
+    ],
+    "summary": "Direct document CRUD, bounded search and vectors."
+  },
+  "features": [
+    "tool",
+    "action",
+    "artifact_bundle",
+    "dataset_connector"
+  ],
+  "required_scopes": [
+    "extension:invoke"
+  ],
+  "egress": {
+    "connection_fields": [
+      "solr.origin"
+    ]
+  },
+  "account_scope": {
+    "scope_type": "project",
+    "description": "Explicit project database connection."
+  },
+  "entrypoint": {
+    "mode": "subprocess",
+    "command": [
+      "python3",
+      "main.py"
+    ],
+    "timeout_seconds": 40
+  },
+  "health": {
+    "command": [
+      "python3",
+      "health.py"
+    ],
+    "timeout_seconds": 5
+  },
+  "ui_manifest": "ui/ui_manifest.yaml",
+  "action_manifest": "ui/actions/actions.yaml",
+  "python_requirements": [],
+  "runtime": {
+    "contract_version": "extension_host_v2",
+    "compatibility": {
+      "platform_min": "1.4.0"
+    },
+    "extension_contract_v2": {
+      "connection_types": "contracts/connection_types.yaml",
+      "operation_manifest": "contracts/operation_manifest.yaml",
+      "step_ui_manifest": "contracts/step_ui_manifest.yaml",
+      "dataset_connectors": [
+        {
+          "connector_id": "solr",
+          "connector_type_id": "solr",
+          "database_kind": "solr",
+          "display_name": "Apache Solr",
+          "description": "Read-only explicit-collection get and closed-DSL search.",
+          "source_kind": "solr",
+          "source_extension_id": "flowsteward.solr",
+          "source_extension_name": "Apache Solr",
+          "source_provider": "Apache Solr",
+          "query_language": "json",
+          "access_mode": "read_only",
+          "runtime_kind": "local_extension",
+          "runtime_adapter_ref": "main.py",
+          "connector_catalog": [
+            {
+              "source_kind": "solr",
+              "connector_type_id": "solr",
+              "display_name": "Apache Solr",
+              "query_language": "json",
+              "preset_config": {}
+            }
+          ],
+          "connection_schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "origin",
+              "collections"
+            ],
+            "properties": {
+              "origin": {
+                "type": "string",
+                "title": "Apache Solr origin"
+              },
+              "collections": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 32,
+                "items": {
+                  "type": "string"
+                },
+                "title": "Concrete allowed collections"
+              },
+              "request_timeout_seconds": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 30,
+                "default": 15
+              }
+            }
+          },
+          "secret_schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "bearer_token": {
+                "type": "string",
+                "title": "Bearer token"
+              },
+              "username": {
+                "type": "string",
+                "title": "Username"
+              },
+              "password": {
+                "type": "string",
+                "title": "Password"
+              }
+            }
+          },
+          "capabilities": {
+            "read_only": true,
+            "test_connection": true,
+            "schema_introspection": true,
+            "validate_query": true,
+            "preview_query": true,
+            "execute_template": true,
+            "infer_output_schema": true,
+            "write_queries": false,
+            "row_preview": true
+          },
+          "safety_profile": {
+            "access_mode": "read_only",
+            "indexes_rows": false,
+            "executes_write_queries": false,
+            "requires_saved_template": true
+          },
+          "preview_support": true,
+          "schema_refresh_support": true
+        }
+      ],
+      "resource_query_manifest": [
+        {
+          "query_id": "runtime_health",
+          "cursor_mode": "none",
+          "description": "Apache Solr runtime health.",
+          "required_scopes": [
+            "extension:invoke"
+          ],
+          "result_fields": [
+            "result.status",
+            "result.extension_id"
+          ],
+          "error_codes": [
+            "invalid_payload"
+          ]
+        },
+        {
+          "query_id": "supported_connectors",
+          "cursor_mode": "none",
+          "description": "Apache Solr supported connectors.",
+          "required_scopes": [
+            "extension:invoke"
+          ],
+          "result_fields": [
+            "result.connectors"
+          ],
+          "error_codes": [
+            "invalid_payload"
+          ]
+        }
+      ]
+    }
+  },
+  "external_effects": [
+    {
+      "operation_id": "upsert_document",
+      "effect_kind": "database_write",
+      "channel": "solr",
+      "idempotency": "required",
+      "test_mode_behavior": "suppress"
+    },
+    {
+      "operation_id": "update_document",
+      "effect_kind": "database_write",
+      "channel": "solr",
+      "idempotency": "required",
+      "test_mode_behavior": "suppress"
+    },
+    {
+      "operation_id": "delete_document",
+      "effect_kind": "database_write",
+      "channel": "solr",
+      "idempotency": "required",
+      "test_mode_behavior": "suppress"
+    },
+    {
+      "operation_id": "upsert_documents",
+      "effect_kind": "database_write",
+      "channel": "solr",
+      "idempotency": "required",
+      "test_mode_behavior": "suppress"
+    }
+  ],
+  "machine_auth": {
+    "service_account_key": "svc_ext_solr",
+    "required_scopes": [
+      "extension:invoke"
+    ]
+  }
+}

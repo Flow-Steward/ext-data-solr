@@ -1,0 +1,67 @@
+{
+  "connection_types": [
+    {
+      "connection_type_id": "solr",
+      "display_name": "Apache Solr",
+      "description": "Exact collection/core allowlist; bearer token or basic authentication.",
+      "config_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "origin",
+          "collections"
+        ],
+        "properties": {
+          "origin": {
+            "type": "string",
+            "title": "Apache Solr origin"
+          },
+          "collections": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "type": "string"
+            },
+            "title": "Concrete allowed collections/cores"
+          },
+          "request_timeout_seconds": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30,
+            "default": 15
+          }
+        }
+      },
+      "secret_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "bearer_token": {
+            "type": "string",
+            "title": "Bearer token"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        }
+      },
+      "capabilities": {
+        "test_connection": false,
+        "live_request": true,
+        "workflow_trigger": false,
+        "callback_ingress": false
+      },
+      "safety_profile": {
+        "requires_https": false,
+        "requires_host_allowlist": true,
+        "stores_secret_values": false
+      }
+    }
+  ]
+}

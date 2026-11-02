@@ -1,0 +1,117 @@
+{
+  "workflow_id": "solr_update_document",
+  "version": "1.0.0",
+  "display_name": "Apache Solr Update Document",
+  "description": "Apache Solr explicit-collection workflow. Select the project connection before execution. Embeddings are supplied by the caller from the same model used for collectioning.",
+  "enabled": true,
+  "trigger": {
+    "confidence_threshold": 0.0
+  },
+  "settings": {
+    "execution_graph": {
+      "schema_version": 1,
+      "entry": {
+        "kind": "step",
+        "id": "update_document"
+      },
+      "edges": [
+        {
+          "source": {
+            "kind": "step",
+            "id": "update_document"
+          },
+          "outcome": {
+            "name": "success"
+          },
+          "target": {
+            "kind": "step",
+            "id": "done"
+          },
+          "rework": false
+        }
+      ]
+    },
+    "callable": {
+      "enabled": true,
+      "trigger_channels": [
+        "ui",
+        "api",
+        "mcp"
+      ],
+      "input_mode": "fields",
+      "strict_inputs": true,
+      "expected_inputs": [
+        {
+          "name": "collection",
+          "type": "text",
+          "required": true,
+          "description": "Collection"
+        },
+        {
+          "name": "document_id",
+          "type": "text",
+          "required": true,
+          "description": "Document Id"
+        },
+        {
+          "name": "doc",
+          "type": "object",
+          "required": true,
+          "description": "Doc"
+        }
+      ],
+      "output_mode": "variables",
+      "expected_outputs": [
+        {
+          "name": "applied",
+          "type": "boolean",
+          "required": false,
+          "description": "Applied"
+        }
+      ],
+      "expected_artifacts": [],
+      "side_effects": [
+        "external_write"
+      ]
+    }
+  },
+  "tags": [
+    "solr",
+    "rag"
+  ],
+  "steps": [
+    {
+      "step_id": "update_document",
+      "display_name": "Update Document",
+      "step_kind": "connector",
+      "connector_id": "solr.update_document",
+      "connector_install_id": "solr",
+      "override": {
+        "connector": {
+          "extension_id": "flowsteward.solr",
+          "action_id": "update_document"
+        }
+      },
+      "input_mapping_jsonb": {
+        "collection": "state.inputs.collection",
+        "document_id": "state.inputs.document_id",
+        "doc": "state.inputs.doc"
+      },
+      "output_mapping_jsonb": {
+        "applied": "state.applied"
+      },
+      "connection_binding_jsonb": {}
+    },
+    {
+      "step_id": "done",
+      "display_name": "Done",
+      "step_kind": "stop_success",
+      "override": {
+        "stop_success": {
+          "message": "Completed."
+        }
+      }
+    }
+  ],
+  "groups": []
+}

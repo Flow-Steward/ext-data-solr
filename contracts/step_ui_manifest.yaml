@@ -1,0 +1,274 @@
+{
+  "forms": [
+    {
+      "operation_id": "get_document",
+      "title": "Get Document",
+      "fields": [
+        {
+          "name": "collection",
+          "widget_type": "textarea",
+          "label": "Collection",
+          "required": true
+        },
+        {
+          "name": "document_id",
+          "widget_type": "textarea",
+          "label": "Document Id",
+          "required": true
+        },
+        {
+          "name": "source_fields",
+          "widget_type": "json",
+          "label": "Source Fields",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operation_id": "search",
+      "title": "Search",
+      "fields": [
+        {
+          "name": "collection",
+          "widget_type": "textarea",
+          "label": "Collection",
+          "required": true
+        },
+        {
+          "name": "query",
+          "widget_type": "json",
+          "label": "Query",
+          "required": false
+        },
+        {
+          "name": "source_fields",
+          "widget_type": "json",
+          "label": "Source Fields",
+          "required": true
+        },
+        {
+          "name": "sort",
+          "widget_type": "json",
+          "label": "Sort",
+          "required": false
+        },
+        {
+          "name": "size",
+          "widget_type": "integer",
+          "label": "Size",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operation_id": "upsert_document",
+      "title": "Upsert Document",
+      "fields": [
+        {
+          "name": "collection",
+          "widget_type": "textarea",
+          "label": "Collection",
+          "required": true
+        },
+        {
+          "name": "document_id",
+          "widget_type": "textarea",
+          "label": "Document Id",
+          "required": true
+        },
+        {
+          "name": "document",
+          "widget_type": "json",
+          "label": "Document",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operation_id": "upsert_documents",
+      "title": "Upsert Documents",
+      "fields": [
+        {
+          "name": "collection",
+          "widget_type": "textarea",
+          "label": "Collection",
+          "required": true
+        },
+        {
+          "name": "documents",
+          "widget_type": "json",
+          "label": "Documents",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operation_id": "update_document",
+      "title": "Update Document",
+      "fields": [
+        {
+          "name": "collection",
+          "widget_type": "textarea",
+          "label": "Collection",
+          "required": true
+        },
+        {
+          "name": "document_id",
+          "widget_type": "textarea",
+          "label": "Document Id",
+          "required": true
+        },
+        {
+          "name": "doc",
+          "widget_type": "json",
+          "label": "Doc",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operation_id": "delete_document",
+      "title": "Delete Document",
+      "fields": [
+        {
+          "name": "collection",
+          "widget_type": "textarea",
+          "label": "Collection",
+          "required": true
+        },
+        {
+          "name": "document_id",
+          "widget_type": "textarea",
+          "label": "Document Id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operation_id": "knn_search",
+      "title": "Knn Search",
+      "fields": [
+        {
+          "name": "collection",
+          "widget_type": "textarea",
+          "label": "Collection",
+          "required": true
+        },
+        {
+          "name": "field",
+          "widget_type": "textarea",
+          "label": "Field",
+          "required": true
+        },
+        {
+          "name": "query_vector",
+          "widget_type": "json",
+          "label": "Query Vector",
+          "required": true
+        },
+        {
+          "name": "k",
+          "widget_type": "integer",
+          "label": "K",
+          "required": false
+        },
+        {
+          "name": "filter",
+          "widget_type": "json",
+          "label": "Filter",
+          "required": false
+        },
+        {
+          "name": "source_fields",
+          "widget_type": "json",
+          "label": "Source Fields",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operation_id": "prepare_chunk",
+      "title": "Prepare Chunk",
+      "fields": [
+        {
+          "name": "document_id",
+          "widget_type": "textarea",
+          "label": "Document Id",
+          "required": true
+        },
+        {
+          "name": "chunk_id",
+          "widget_type": "textarea",
+          "label": "Chunk Id",
+          "required": true
+        },
+        {
+          "name": "text",
+          "widget_type": "textarea",
+          "label": "Text",
+          "required": true
+        },
+        {
+          "name": "source_uri",
+          "widget_type": "textarea",
+          "label": "Source Uri",
+          "required": true
+        },
+        {
+          "name": "title",
+          "widget_type": "textarea",
+          "label": "Title",
+          "required": true
+        },
+        {
+          "name": "vector",
+          "widget_type": "json",
+          "label": "Vector",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operation_id": "prepare_sources",
+      "title": "Prepare Sources",
+      "fields": [
+        {
+          "name": "documents",
+          "widget_type": "json",
+          "label": "Documents",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operation_id": "finalize_answer",
+      "title": "Finalize Answer",
+      "fields": [
+        {
+          "name": "answer",
+          "widget_type": "textarea",
+          "label": "Answer",
+          "required": true
+        },
+        {
+          "name": "cited_source_ids",
+          "widget_type": "json",
+          "label": "Cited Source Ids",
+          "required": true
+        },
+        {
+          "name": "sources",
+          "widget_type": "json",
+          "label": "Sources",
+          "required": true
+        },
+        {
+          "name": "abstained",
+          "widget_type": "boolean",
+          "label": "Abstained",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

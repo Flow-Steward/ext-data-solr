@@ -1,0 +1,6 @@
+{
+  "page_id": "about",
+  "title": "Apache Solr",
+  "description": "Direct Apache Solr document, vector and read-only Dataset operations.",
+  "components": []
+}
