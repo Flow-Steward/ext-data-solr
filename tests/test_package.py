@@ -33,6 +33,11 @@ def test_deterministic_architecture_labelled_archives(tmp_path):
             # Public catalog discovery consumes extension.yaml, not the descriptor.
             manifest = json.loads(archive.read("flowsteward_solr/extension.yaml"))
             descriptor = json.loads(archive.read("flowsteward_solr/extension-descriptor.yaml"))
+            assert a.name == f"flowsteward.solr-1.0.1-{target}.zip"
+            assert manifest["extension_id"] == descriptor["extension_id"] == "flowsteward.solr"
+            assert manifest["version"] == descriptor["release_version"] == "1.0.1"
+            assert manifest["runtime"] == descriptor["runtime"]
+            assert manifest["runtime"]["compatibility"]["platform_min"] == "1.5.0"
             assert "dataset_connector" in manifest["features"]
             host_ids = {
                 "test_connection",
@@ -120,3 +125,16 @@ def test_packaged_typed_dataset_query_dispatches_through_actual_core(tmp_path):
         check=False,
     )
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_native_dataset_requires_platform_1_5_in_both_descriptors():
+    minimums = {
+        filename: json.loads((Path(__file__).resolve().parents[1] / filename).read_text())[
+            "runtime"
+        ]["compatibility"]["platform_min"]
+        for filename in ("extension.yaml", "extension-descriptor.yaml")
+    }
+    assert minimums == {
+        "extension.yaml": "1.5.0",
+        "extension-descriptor.yaml": "1.5.0",
+    }

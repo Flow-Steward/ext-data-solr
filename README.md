@@ -1,6 +1,6 @@
 # Apache Solr for Flow Steward
 
-Standalone `flowsteward.solr` 1.0.0 provides exact-ID document CRUD, bounded
+Standalone `flowsteward.solr` 1.0.1 provides exact-ID document CRUD, bounded
 full-text search, supplied-vector retrieval, and native read-only Dataset/DataQuery
 queries. It fills the delete and vector-search gaps in the ApacheSolr MCP catalog
 entry. No triggers, schema administration, Solr server, Java runtime, or driver are
@@ -9,7 +9,7 @@ independent connector does not imply endorsement.
 
 Install the separate `linux-amd64` or `linux-arm64` ZIP through Flow Steward's
 extension installer. The host supplies Python 3.12 and
-`flowsteward-extension-sdk==0.4.0`. The declared minimum host is 1.4.0.
+`flowsteward-extension-sdk==0.4.0`. The declared minimum host is 1.5.0.
 Only Linux transport workers are supported. Archive limits are 50 MiB compressed
 and 150 MiB expanded; this pure Python connector is substantially smaller.
 
