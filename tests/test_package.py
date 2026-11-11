@@ -33,9 +33,9 @@ def test_deterministic_architecture_labelled_archives(tmp_path):
             # Public catalog discovery consumes extension.yaml, not the descriptor.
             manifest = json.loads(archive.read("flowsteward_solr/extension.yaml"))
             descriptor = json.loads(archive.read("flowsteward_solr/extension-descriptor.yaml"))
-            assert a.name == f"flowsteward.solr-1.0.1-{target}.zip"
+            assert a.name == f"flowsteward.solr-1.0.2-{target}.zip"
             assert manifest["extension_id"] == descriptor["extension_id"] == "flowsteward.solr"
-            assert manifest["version"] == descriptor["release_version"] == "1.0.1"
+            assert manifest["version"] == descriptor["release_version"] == "1.0.2"
             assert manifest["runtime"] == descriptor["runtime"]
             assert manifest["runtime"]["compatibility"]["platform_min"] == "1.5.0"
             assert "dataset_connector" in manifest["features"]

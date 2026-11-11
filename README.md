@@ -1,9 +1,16 @@
 # Apache Solr for Flow Steward
 
-Standalone `flowsteward.solr` 1.0.1 provides exact-ID document CRUD, bounded
+Use Apache Solr in Flow Steward for searchable document collections, supplied-vector retrieval and read-only Dataset queries. Workflow actions retrieve a document by its unique key, search selected stored fields, replace one document or a batch of up to 100, set individual fields, and delete an exact document ID. Search supports text matching, exact terms, ranges, Boolean filters and sorting. Nearest-neighbor retrieval uses an existing dense-vector field and returns matching documents with scores.
+
+Read-only JSON Datasets add schema inspection, saved parameterized searches, previews and output-schema inference over explicitly allowed collections and fields. Included example workflows demonstrate chunk ingestion, field updates, deletion and question answering with source citations. You supply embeddings and configure the project's answer model; the extension does not generate vectors.
+
+Create collections and schemas before connecting. Document fields must be flat scalars or arrays, and reads return at most 100 rows. Solr controls when accepted writes become searchable. The connector covers document access rather than schema administration and does not expose raw query syntax or delete-by-query. Multi-chunk changes require tracking and removing obsolete chunk IDs yourself.
+
+## Runtime and operation requirements
+
+Standalone `flowsteward.solr` 1.0.2 provides exact-ID document CRUD, bounded
 full-text search, supplied-vector retrieval, and native read-only Dataset/DataQuery
-queries. It fills the delete and vector-search gaps in the ApacheSolr MCP catalog
-entry. No triggers, schema administration, Solr server, Java runtime, or driver are
+queries. No triggers, schema administration, Solr server, Java runtime, or driver are
 bundled. Apache Solr is a trademark of The Apache Software Foundation; this
 independent connector does not imply endorsement.
 
