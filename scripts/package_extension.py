@@ -14,7 +14,7 @@ import zipfile
 from pathlib import Path
 
 EXTENSION_ID = "flowsteward.solr"
-VERSION = "1.0.2"
+VERSION = "1.0.3"
 TOP_FOLDER = "flowsteward_solr"
 SOURCE_DATE_EPOCH = 1779400183
 MAX_ARCHIVE_BYTES = 50 * 1024 * 1024
@@ -24,6 +24,7 @@ PAYLOAD_DIRECTORIES = frozenset({"contracts", "ui", "scripts", "tests", "artifac
 EXCLUDED_DIRECTORIES = frozenset(
     {
         ".git",
+        ".github",
         ".venv",
         "venv",
         ".fs-python",

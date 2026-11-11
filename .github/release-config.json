@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "extension_id": "flowsteward.solr",
+  "runtime_targets": [
+    "linux-amd64",
+    "linux-arm64"
+  ],
+  "package_script": "scripts/package_extension.py",
+  "test_requirements": [
+    "requirements-dev.txt"
+  ],
+  "test_paths": [
+    "tests/test_bootstrap.py",
+    "tests/test_boundaries.py",
+    "tests/test_commands.py",
+    "tests/test_dataset_vectors.py",
+    "tests/test_package.py::test_deterministic_architecture_labelled_archives",
+    "tests/test_package.py::test_native_dataset_requires_platform_1_5_in_both_descriptors",
+    "tests/test_rag.py::test_stable_chunk_identity_and_source_metadata",
+    "tests/test_rag.py::test_retrieval_grounded_answer_and_empty_abstention",
+    "tests/test_runtime.py",
+    "tests/test_transport.py",
+    "tests/test_write_outputs.py"
+  ],
+  "additional_assets": [],
+  "payload_sources": []
+}

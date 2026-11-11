@@ -8,7 +8,7 @@ Create collections and schemas before connecting. Document fields must be flat s
 
 ## Runtime and operation requirements
 
-Standalone `flowsteward.solr` 1.0.2 provides exact-ID document CRUD, bounded
+Standalone `flowsteward.solr` 1.0.3 provides exact-ID document CRUD, bounded
 full-text search, supplied-vector retrieval, and native read-only Dataset/DataQuery
 queries. No triggers, schema administration, Solr server, Java runtime, or driver are
 bundled. Apache Solr is a trademark of The Apache Software Foundation; this
@@ -201,3 +201,33 @@ Official API references (Solr 9.11):
 [schema API](https://solr.apache.org/guide/solr/9_11/indexing-guide/schema-api.html).
 The live version tested for this release is recorded in the acceptance report;
 newer Solr versions are not implicitly certified.
+
+## Automated CI and releases
+
+Pushes to `main` and pull requests run the shared extension build workflow. The checked-in `.github/release-config.json` selects both Linux targets, the repository's package script and test inputs. Missing native payloads and published-only inventory are restored from checksum-pinned release archives; tracked source files are preserved. The source packager retains its provenance checks.
+
+After the versioned release commit is on `main`, publish by pushing its version tag:
+
+```sh
+git tag v1.0.3
+git push origin v1.0.3
+```
+
+The release workflow runs the shared checks, builds the target archives and publishes the GitHub release and checksums. Do not move an existing tag. To rerun a release for an existing tag, dispatch the same workflow:
+
+```sh
+gh workflow run release.yml --repo Flow-Steward/ext-data-solr --ref main -f tag=v1.0.3
+```
+
+The manifest, descriptor (when present), package version and tag must identify the same release. Release publication uses the workflow token; no additional repository secret is required by these callers.
+
+### Standalone CI coverage
+
+The release recipe lists the standalone test files and individual test nodes explicitly, including package, source and provenance contracts. The shared runner clears repository pytest addopts so packaged contract checks are not silently deselected. This scope does not claim live provider or database verification.
+
+The following integration coverage requires a separate environment and is not part of standalone CI:
+
+- `tests/test_live_solr.py`: Opt-in live provider/server test requires external credentials or a disposable service fixture.
+- `tests/test_package.py::test_packaged_typed_dataset_query_dispatches_through_actual_core`: Executes a Core validator/dispatcher with PYTHONPATH=/app and imports Core modules.
+- `tests/test_rag.py::test_insufficient_evidence_passes_core_output_contract_and_citation_bridge`: Executes a Core validator/dispatcher with PYTHONPATH=/app and imports Core modules.
+- `tests/test_workflows.py::test_core_workflow_import_and_runtime_contract`: Executes a Core validator/dispatcher with PYTHONPATH=/app and imports Core modules.
