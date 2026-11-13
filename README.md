@@ -1,5 +1,7 @@
 # Apache Solr for Flow Steward
 
+See [Workflow action guide](docs/workflow-actions.md) for action selection, setup requirements and JSON field examples.
+
 Use Apache Solr in Flow Steward for searchable document collections, supplied-vector retrieval and read-only Dataset queries. Workflow actions retrieve a document by its unique key, search selected stored fields, replace one document or a batch of up to 100, set individual fields, and delete an exact document ID. Search supports text matching, exact terms, ranges, Boolean filters and sorting. Nearest-neighbor retrieval uses an existing dense-vector field and returns matching documents with scores.
 
 Read-only JSON Datasets add schema inspection, saved parameterized searches, previews and output-schema inference over explicitly allowed collections and fields. Included example workflows demonstrate chunk ingestion, field updates, deletion and question answering with source citations. You supply embeddings and configure the project's answer model; the extension does not generate vectors.
@@ -8,7 +10,7 @@ Create collections and schemas before connecting. Document fields must be flat s
 
 ## Runtime and operation requirements
 
-Standalone `flowsteward.solr` 1.0.3 provides exact-ID document CRUD, bounded
+Standalone `flowsteward.solr` 1.0.4 provides exact-ID document CRUD, bounded
 full-text search, supplied-vector retrieval, and native read-only Dataset/DataQuery
 queries. No triggers, schema administration, Solr server, Java runtime, or driver are
 bundled. Apache Solr is a trademark of The Apache Software Foundation; this
@@ -209,14 +211,14 @@ Pushes to `main` and pull requests run the shared extension build workflow. The 
 After the versioned release commit is on `main`, publish by pushing its version tag:
 
 ```sh
-git tag v1.0.3
-git push origin v1.0.3
+git tag v1.0.4
+git push origin v1.0.4
 ```
 
 The release workflow runs the shared checks, builds the target archives and publishes the GitHub release and checksums. Do not move an existing tag. To rerun a release for an existing tag, dispatch the same workflow:
 
 ```sh
-gh workflow run release.yml --repo Flow-Steward/ext-data-solr --ref main -f tag=v1.0.3
+gh workflow run release.yml --repo Flow-Steward/ext-data-solr --ref main -f tag=v1.0.4
 ```
 
 The manifest, descriptor (when present), package version and tag must identify the same release. Release publication uses the workflow token; no additional repository secret is required by these callers.

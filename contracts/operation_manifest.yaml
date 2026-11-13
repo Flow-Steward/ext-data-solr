@@ -2,8 +2,8 @@
   "operations": [
     {
       "operation_id": "get_document",
-      "display_name": "Get Document",
-      "description": "Get document.",
+      "display_name": "Read a document by ID",
+      "description": "Read one document by its exact ID, returning only explicitly selected source fields.",
       "operation_kind": "action",
       "workflow_visible": true,
       "connection_type_ids": [
@@ -15,25 +15,25 @@
           "name": "connection_ref",
           "value_type": "connection_ref",
           "required": true,
-          "display_name": "Connection Ref"
+          "display_name": "Project connection"
         },
         {
           "name": "collection",
           "value_type": "text",
           "required": true,
-          "display_name": "Collection"
+          "display_name": "Collection name"
         },
         {
           "name": "document_id",
           "value_type": "text",
           "required": true,
-          "display_name": "Document Id"
+          "display_name": "Document ID"
         },
         {
           "name": "source_fields",
           "value_type": "json",
           "required": true,
-          "display_name": "Source Fields",
+          "display_name": "Source fields to return (JSON)",
           "schema": {
             "type": "array",
             "maxItems": 100
@@ -81,8 +81,8 @@
     },
     {
       "operation_id": "search",
-      "display_name": "Search",
-      "description": "Search.",
+      "display_name": "Search documents by text or filters",
+      "description": "Read up to 100 matching documents using the supported term, match, range and boolean query format. Select the source fields to return; no arbitrary query scripts are accepted.",
       "operation_kind": "action",
       "workflow_visible": true,
       "connection_type_ids": [
@@ -94,25 +94,25 @@
           "name": "connection_ref",
           "value_type": "connection_ref",
           "required": true,
-          "display_name": "Connection Ref"
+          "display_name": "Project connection"
         },
         {
           "name": "collection",
           "value_type": "text",
           "required": true,
-          "display_name": "Collection"
+          "display_name": "Collection name"
         },
         {
           "name": "query",
           "value_type": "json",
           "required": false,
-          "display_name": "Query"
+          "display_name": "Supported search query (JSON)"
         },
         {
           "name": "source_fields",
           "value_type": "json",
           "required": true,
-          "display_name": "Source Fields",
+          "display_name": "Source fields to return (JSON)",
           "schema": {
             "type": "array",
             "maxItems": 100
@@ -122,7 +122,7 @@
           "name": "sort",
           "value_type": "json",
           "required": false,
-          "display_name": "Sort",
+          "display_name": "Sort order (JSON)",
           "schema": {
             "type": "array",
             "maxItems": 100
@@ -132,7 +132,7 @@
           "name": "size",
           "value_type": "integer",
           "required": false,
-          "display_name": "Size"
+          "display_name": "Maximum matching documents"
         }
       ],
       "outputs": [
@@ -176,8 +176,8 @@
     },
     {
       "operation_id": "upsert_document",
-      "display_name": "Upsert Document",
-      "description": "Upsert document.",
+      "display_name": "Create or replace a complete document",
+      "description": "Save a document at a stable ID, creating it if missing and replacing its stored fields if present. Omitted fields are removed.",
       "operation_kind": "action",
       "workflow_visible": true,
       "connection_type_ids": [
@@ -189,25 +189,25 @@
           "name": "connection_ref",
           "value_type": "connection_ref",
           "required": true,
-          "display_name": "Connection Ref"
+          "display_name": "Project connection"
         },
         {
           "name": "collection",
           "value_type": "text",
           "required": true,
-          "display_name": "Collection"
+          "display_name": "Collection name"
         },
         {
           "name": "document_id",
           "value_type": "text",
           "required": true,
-          "display_name": "Document Id"
+          "display_name": "Document ID"
         },
         {
           "name": "document",
           "value_type": "json",
           "required": true,
-          "display_name": "Document"
+          "display_name": "Complete document (JSON)"
         }
       ],
       "outputs": [
@@ -246,8 +246,8 @@
     },
     {
       "operation_id": "upsert_documents",
-      "display_name": "Upsert Documents",
-      "description": "Replace 1\u2013100 documents by their actual unique key.",
+      "display_name": "Create or replace a batch of documents",
+      "description": "Save 1–100 complete Solr documents, each containing the collection’s actual unique-key field. Existing documents with those IDs are replaced.",
       "operation_kind": "action",
       "workflow_visible": true,
       "connection_type_ids": [
@@ -259,19 +259,19 @@
           "name": "connection_ref",
           "value_type": "connection_ref",
           "required": true,
-          "display_name": "Connection Ref"
+          "display_name": "Project connection"
         },
         {
           "name": "collection",
           "value_type": "text",
           "required": true,
-          "display_name": "Collection"
+          "display_name": "Collection name"
         },
         {
           "name": "documents",
           "value_type": "json",
           "required": true,
-          "display_name": "Documents",
+          "display_name": "Complete documents with unique keys (JSON)",
           "schema": {
             "type": "array",
             "minItems": 1,
@@ -310,8 +310,8 @@
     },
     {
       "operation_id": "update_document",
-      "display_name": "Update Document",
-      "description": "Update document.",
+      "display_name": "Patch selected document fields",
+      "description": "Set the supplied fields on the selected document while preserving omitted fields. Supply plain field values, not scripts or update modifiers. Requires a reconstructable stored/docValues schema; the connector generates atomic set updates.",
       "operation_kind": "action",
       "workflow_visible": true,
       "connection_type_ids": [
@@ -323,25 +323,25 @@
           "name": "connection_ref",
           "value_type": "connection_ref",
           "required": true,
-          "display_name": "Connection Ref"
+          "display_name": "Project connection"
         },
         {
           "name": "collection",
           "value_type": "text",
           "required": true,
-          "display_name": "Collection"
+          "display_name": "Collection name"
         },
         {
           "name": "document_id",
           "value_type": "text",
           "required": true,
-          "display_name": "Document Id"
+          "display_name": "Document ID"
         },
         {
           "name": "doc",
           "value_type": "json",
           "required": true,
-          "display_name": "Doc"
+          "display_name": "Fields to update (JSON)"
         }
       ],
       "outputs": [
@@ -380,8 +380,8 @@
     },
     {
       "operation_id": "delete_document",
-      "display_name": "Delete Document",
-      "description": "Delete document.",
+      "display_name": "Delete one document by ID",
+      "description": "Delete the exact document ID from the selected collection. Other documents remain stored.",
       "operation_kind": "action",
       "workflow_visible": true,
       "connection_type_ids": [
@@ -393,19 +393,19 @@
           "name": "connection_ref",
           "value_type": "connection_ref",
           "required": true,
-          "display_name": "Connection Ref"
+          "display_name": "Project connection"
         },
         {
           "name": "collection",
           "value_type": "text",
           "required": true,
-          "display_name": "Collection"
+          "display_name": "Collection name"
         },
         {
           "name": "document_id",
           "value_type": "text",
           "required": true,
-          "display_name": "Document Id"
+          "display_name": "Document ID"
         }
       ],
       "outputs": [
@@ -444,8 +444,8 @@
     },
     {
       "operation_id": "knn_search",
-      "display_name": "Knn Search",
-      "description": "Knn search.",
+      "display_name": "Vector: Search similar documents",
+      "description": "Retrieve up to 100 nearest documents using a supplied numeric embedding and optional supported filter. Use the same model and dimensions used to index the vector field; no embeddings are generated.",
       "operation_kind": "action",
       "workflow_visible": true,
       "connection_type_ids": [
@@ -457,25 +457,25 @@
           "name": "connection_ref",
           "value_type": "connection_ref",
           "required": true,
-          "display_name": "Connection Ref"
+          "display_name": "Project connection"
         },
         {
           "name": "collection",
           "value_type": "text",
           "required": true,
-          "display_name": "Collection"
+          "display_name": "Collection name"
         },
         {
           "name": "field",
           "value_type": "text",
           "required": true,
-          "display_name": "Field"
+          "display_name": "Indexed vector field"
         },
         {
           "name": "query_vector",
           "value_type": "json",
           "required": true,
-          "display_name": "Query Vector",
+          "display_name": "Search embedding (numeric array)",
           "schema": {
             "type": "array",
             "maxItems": 4096
@@ -485,19 +485,19 @@
           "name": "k",
           "value_type": "integer",
           "required": false,
-          "display_name": "K"
+          "display_name": "Maximum nearest documents"
         },
         {
           "name": "filter",
           "value_type": "json",
           "required": false,
-          "display_name": "Filter"
+          "display_name": "Vector search filter (JSON)"
         },
         {
           "name": "source_fields",
           "value_type": "json",
           "required": true,
-          "display_name": "Source Fields",
+          "display_name": "Source fields to return (JSON)",
           "schema": {
             "type": "array",
             "maxItems": 100
@@ -545,8 +545,8 @@
     },
     {
       "operation_id": "prepare_chunk",
-      "display_name": "Prepare Chunk",
-      "description": "Prepare Chunk. No embedding calls.",
+      "display_name": "RAG: Prepare a text fragment for indexing",
+      "description": "Build a document with text, source details and a supplied embedding, plus a stable physical ID derived from document and fragment IDs. Pass both outputs to Create or replace a complete document; this step does not write or generate embeddings.",
       "operation_kind": "action",
       "workflow_visible": true,
       "connection_type_ids": [],
@@ -556,37 +556,37 @@
           "name": "document_id",
           "value_type": "text",
           "required": true,
-          "display_name": "Document Id"
+          "display_name": "Document ID"
         },
         {
           "name": "chunk_id",
           "value_type": "text",
           "required": true,
-          "display_name": "Chunk Id"
+          "display_name": "Text fragment ID"
         },
         {
           "name": "text",
           "value_type": "text",
           "required": true,
-          "display_name": "Text"
+          "display_name": "Fragment text"
         },
         {
           "name": "source_uri",
           "value_type": "text",
           "required": true,
-          "display_name": "Source Uri"
+          "display_name": "Source URL or artifact URI"
         },
         {
           "name": "title",
           "value_type": "text",
           "required": true,
-          "display_name": "Title"
+          "display_name": "Source title"
         },
         {
           "name": "vector",
           "value_type": "json",
           "required": true,
-          "display_name": "Vector",
+          "display_name": "Embedding (numeric array)",
           "schema": {
             "type": "array",
             "maxItems": 4096
@@ -613,8 +613,8 @@
     },
     {
       "operation_id": "prepare_sources",
-      "display_name": "Prepare Sources",
-      "description": "Prepare Sources. No embedding calls.",
+      "display_name": "RAG: Build cited context from search results",
+      "description": "Turn retrieved documents into bounded excerpts labeled S1, S2 and so on for an answer model. Pass the context to the model and retain sources for citation validation; this step does not generate an answer.",
       "operation_kind": "action",
       "workflow_visible": true,
       "connection_type_ids": [],
@@ -624,7 +624,7 @@
           "name": "documents",
           "value_type": "json",
           "required": true,
-          "display_name": "Documents",
+          "display_name": "Retrieved documents (JSON)",
           "schema": {
             "type": "array",
             "maxItems": 100
@@ -656,8 +656,8 @@
     },
     {
       "operation_id": "finalize_answer",
-      "display_name": "Finalize Answer",
-      "description": "Finalize Answer. No embedding calls.",
+      "display_name": "RAG: Validate answer citation IDs",
+      "description": "Check that answer markers such as [S1] match the cited IDs and supplied sources. Returns a fixed abstention when no evidence exists; checks citation syntax, not whether the answer follows from the text.",
       "operation_kind": "action",
       "workflow_visible": true,
       "connection_type_ids": [],
@@ -667,13 +667,13 @@
           "name": "answer",
           "value_type": "text",
           "required": true,
-          "display_name": "Answer"
+          "display_name": "Generated answer with citation markers"
         },
         {
           "name": "cited_source_ids",
           "value_type": "json",
           "required": true,
-          "display_name": "Cited Source Ids",
+          "display_name": "Cited source IDs (JSON)",
           "schema": {
             "type": "array",
             "maxItems": 100
@@ -683,7 +683,7 @@
           "name": "sources",
           "value_type": "json",
           "required": true,
-          "display_name": "Sources",
+          "display_name": "Prepared sources (JSON)",
           "schema": {
             "type": "array",
             "maxItems": 100
@@ -693,7 +693,7 @@
           "name": "abstained",
           "value_type": "boolean",
           "required": false,
-          "display_name": "Abstained"
+          "display_name": "Answer model abstained"
         }
       ],
       "outputs": [

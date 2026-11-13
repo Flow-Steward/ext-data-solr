@@ -2,271 +2,341 @@
   "forms": [
     {
       "operation_id": "get_document",
-      "title": "Get Document",
+      "title": "Read a document by ID",
       "fields": [
         {
           "name": "collection",
           "widget_type": "textarea",
-          "label": "Collection",
-          "required": true
+          "label": "Collection name",
+          "required": true,
+          "help_text": "Existing Solr collection permitted by the connection’s collections allowlist. The connector checks its actual schema.",
+          "placeholder": "knowledge_chunks"
         },
         {
           "name": "document_id",
           "widget_type": "textarea",
-          "label": "Document Id",
-          "required": true
+          "label": "Document ID",
+          "required": true,
+          "help_text": "Stable identifier for this document. Reuse the same ID when updating or deleting it.",
+          "placeholder": "manual_42"
         },
         {
           "name": "source_fields",
           "widget_type": "json",
-          "label": "Source Fields",
-          "required": true
+          "label": "Source fields to return (JSON)",
+          "required": true,
+          "help_text": "Required explicit array of 1–100 distinct top-level fields. For RAG context include text, document_id, chunk_id, source_uri and title. No wildcard projection.",
+          "placeholder": "[\"text\",\"document_id\",\"chunk_id\",\"source_uri\",\"title\"]"
         }
       ]
     },
     {
       "operation_id": "search",
-      "title": "Search",
+      "title": "Search documents by text or filters",
       "fields": [
         {
           "name": "collection",
           "widget_type": "textarea",
-          "label": "Collection",
-          "required": true
+          "label": "Collection name",
+          "required": true,
+          "help_text": "Existing Solr collection permitted by the connection’s collections allowlist. The connector checks its actual schema.",
+          "placeholder": "knowledge_chunks"
         },
         {
           "name": "query",
           "widget_type": "json",
-          "label": "Query",
-          "required": false
+          "label": "Supported search query (JSON)",
+          "required": false,
+          "help_text": "One supported operator per object: match_all, term, terms, range, match or bool. This is a query clause, not a complete search request. Omit for match_all.",
+          "placeholder": "{\"match\":{\"text\":\"refund policy\"}}"
         },
         {
           "name": "source_fields",
           "widget_type": "json",
-          "label": "Source Fields",
-          "required": true
+          "label": "Source fields to return (JSON)",
+          "required": true,
+          "help_text": "Required explicit array of 1–100 distinct top-level fields. For RAG context include text, document_id, chunk_id, source_uri and title. No wildcard projection.",
+          "placeholder": "[\"text\",\"document_id\",\"chunk_id\",\"source_uri\",\"title\"]"
         },
         {
           "name": "sort",
           "widget_type": "json",
-          "label": "Sort",
-          "required": false
+          "label": "Sort order (JSON)",
+          "required": false,
+          "help_text": "Array of up to 8 single-field objects using asc or desc. Fields must support sorting in the server schema.",
+          "placeholder": "[{\"title\":\"asc\"}]"
         },
         {
           "name": "size",
           "widget_type": "integer",
-          "label": "Size",
-          "required": false
+          "label": "Maximum matching documents",
+          "required": false,
+          "help_text": "Return at most 1–100 documents (default 100). This action does not automatically read further pages.",
+          "placeholder": "20"
         }
       ]
     },
     {
       "operation_id": "upsert_document",
-      "title": "Upsert Document",
+      "title": "Create or replace a complete document",
       "fields": [
         {
           "name": "collection",
           "widget_type": "textarea",
-          "label": "Collection",
-          "required": true
+          "label": "Collection name",
+          "required": true,
+          "help_text": "Existing Solr collection permitted by the connection’s collections allowlist. The connector checks its actual schema.",
+          "placeholder": "knowledge_chunks"
         },
         {
           "name": "document_id",
           "widget_type": "textarea",
-          "label": "Document Id",
-          "required": true
+          "label": "Document ID",
+          "required": true,
+          "help_text": "Stable identifier for this document. Reuse the same ID when updating or deleting it.",
+          "placeholder": "manual_42"
         },
         {
           "name": "document",
           "widget_type": "json",
-          "label": "Document",
-          "required": true
+          "label": "Complete document (JSON)",
+          "required": true,
+          "help_text": "Nonempty object of source field values. Replaces the complete document at Document ID; include text and a supplied vector when indexing retrieval content. Use concrete Solr schema fields with scalar/scalar-array values. Supply the unique key only through Document ID.",
+          "placeholder": "{\"text\":\"Refunds are accepted within 30 days.\",\"title\":\"Refund policy\",\"vector\":[0.1,0.2,0.3]}"
         }
       ]
     },
     {
       "operation_id": "upsert_documents",
-      "title": "Upsert Documents",
+      "title": "Create or replace a batch of documents",
       "fields": [
         {
           "name": "collection",
           "widget_type": "textarea",
-          "label": "Collection",
-          "required": true
+          "label": "Collection name",
+          "required": true,
+          "help_text": "Existing Solr collection permitted by the connection’s collections allowlist. The connector checks its actual schema.",
+          "placeholder": "knowledge_chunks"
         },
         {
           "name": "documents",
           "widget_type": "json",
-          "label": "Documents",
-          "required": true
+          "label": "Complete documents with unique keys (JSON)",
+          "required": true,
+          "help_text": "Array of 1–100 flat document objects containing the collection’s actual unique-key field. The example assumes the unique key is id; replace it if your schema differs. Each matching document is fully replaced.",
+          "placeholder": "[{\"id\":\"manual_42\",\"text\":\"Refunds are accepted within 30 days.\"}]"
         }
       ]
     },
     {
       "operation_id": "update_document",
-      "title": "Update Document",
+      "title": "Patch selected document fields",
       "fields": [
         {
           "name": "collection",
           "widget_type": "textarea",
-          "label": "Collection",
-          "required": true
+          "label": "Collection name",
+          "required": true,
+          "help_text": "Existing Solr collection permitted by the connection’s collections allowlist. The connector checks its actual schema.",
+          "placeholder": "knowledge_chunks"
         },
         {
           "name": "document_id",
           "widget_type": "textarea",
-          "label": "Document Id",
-          "required": true
+          "label": "Document ID",
+          "required": true,
+          "help_text": "Stable identifier for this document. Reuse the same ID when updating or deleting it.",
+          "placeholder": "manual_42"
         },
         {
           "name": "doc",
           "widget_type": "json",
-          "label": "Doc",
-          "required": true
+          "label": "Fields to update (JSON)",
+          "required": true,
+          "help_text": "Nonempty object of fields and new values. Omitted fields remain unchanged. If text changes, supply its newly generated vector too. Use concrete Solr schema fields with scalar/scalar-array values. Supply the unique key only through Document ID.",
+          "placeholder": "{\"title\":\"Updated refund policy\"}"
         }
       ]
     },
     {
       "operation_id": "delete_document",
-      "title": "Delete Document",
+      "title": "Delete one document by ID",
       "fields": [
         {
           "name": "collection",
           "widget_type": "textarea",
-          "label": "Collection",
-          "required": true
+          "label": "Collection name",
+          "required": true,
+          "help_text": "Existing Solr collection permitted by the connection’s collections allowlist. The connector checks its actual schema.",
+          "placeholder": "knowledge_chunks"
         },
         {
           "name": "document_id",
           "widget_type": "textarea",
-          "label": "Document Id",
-          "required": true
+          "label": "Document ID",
+          "required": true,
+          "help_text": "Stable identifier for this document. Reuse the same ID when updating or deleting it.",
+          "placeholder": "manual_42"
         }
       ]
     },
     {
       "operation_id": "knn_search",
-      "title": "Knn Search",
+      "title": "Vector: Search similar documents",
       "fields": [
         {
           "name": "collection",
           "widget_type": "textarea",
-          "label": "Collection",
-          "required": true
+          "label": "Collection name",
+          "required": true,
+          "help_text": "Existing Solr collection permitted by the connection’s collections allowlist. The connector checks its actual schema.",
+          "placeholder": "knowledge_chunks"
         },
         {
           "name": "field",
           "widget_type": "textarea",
-          "label": "Field",
-          "required": true
+          "label": "Indexed vector field",
+          "required": true,
+          "help_text": "Name of the existing indexed vector field. Its dimensions must match the supplied embedding.",
+          "placeholder": "vector"
         },
         {
           "name": "query_vector",
           "widget_type": "json",
-          "label": "Query Vector",
-          "required": true
+          "label": "Search embedding (numeric array)",
+          "required": true,
+          "help_text": "Embedding generated in an earlier step with the same model used to index document vectors. Use the full matching dimension count; the 3-value example is illustrative.",
+          "placeholder": "[0.1,0.2,0.3]"
         },
         {
           "name": "k",
           "widget_type": "integer",
-          "label": "K",
-          "required": false
+          "label": "Maximum nearest documents",
+          "required": false,
+          "help_text": "Number of nearest documents to return, 1–100 (default 5).",
+          "placeholder": "5"
         },
         {
           "name": "filter",
           "widget_type": "json",
-          "label": "Filter",
-          "required": false
+          "label": "Vector search filter (JSON)",
+          "required": false,
+          "help_text": "Optional supported query clause to restrict matching documents, using the same closed format as text search.",
+          "placeholder": "{\"term\":{\"document_id\":\"manual_42\"}}"
         },
         {
           "name": "source_fields",
           "widget_type": "json",
-          "label": "Source Fields",
-          "required": true
+          "label": "Source fields to return (JSON)",
+          "required": true,
+          "help_text": "Required explicit array of 1–100 distinct top-level fields. For RAG context include text, document_id, chunk_id, source_uri and title. No wildcard projection.",
+          "placeholder": "[\"text\",\"document_id\",\"chunk_id\",\"source_uri\",\"title\"]"
         }
       ]
     },
     {
       "operation_id": "prepare_chunk",
-      "title": "Prepare Chunk",
+      "title": "RAG: Prepare a text fragment for indexing",
       "fields": [
         {
           "name": "document_id",
           "widget_type": "textarea",
-          "label": "Document Id",
-          "required": true
+          "label": "Document ID",
+          "required": true,
+          "help_text": "Stable identifier for this document. Reuse the same ID when updating or deleting it.",
+          "placeholder": "manual_42"
         },
         {
           "name": "chunk_id",
           "widget_type": "textarea",
-          "label": "Chunk Id",
-          "required": true
+          "label": "Text fragment ID",
+          "required": true,
+          "help_text": "Stable identifier for this fragment within the document. Reuse it when replacing that fragment.",
+          "placeholder": "part_1"
         },
         {
           "name": "text",
           "widget_type": "textarea",
-          "label": "Text",
-          "required": true
+          "label": "Fragment text",
+          "required": true,
+          "help_text": "Text to index and later use as retrieved evidence. Generate its embedding in an earlier workflow step.",
+          "placeholder": "Refund requests are accepted within 30 days."
         },
         {
           "name": "source_uri",
           "widget_type": "textarea",
-          "label": "Source Uri",
-          "required": true
+          "label": "Source URL or artifact URI",
+          "required": true,
+          "help_text": "Source reference to show with retrieved evidence. Use HTTP(S) or an artifact URI without credentials; an empty string is allowed.",
+          "placeholder": "https://example.com/manual"
         },
         {
           "name": "title",
           "widget_type": "textarea",
-          "label": "Title",
-          "required": true
+          "label": "Source title",
+          "required": true,
+          "help_text": "Human-readable title to include with evidence. An empty string is allowed.",
+          "placeholder": "Refund policy"
         },
         {
           "name": "vector",
           "widget_type": "json",
-          "label": "Vector",
-          "required": true
+          "label": "Embedding (numeric array)",
+          "required": true,
+          "help_text": "Supply an embedding from an earlier step using the same model and dimensions as the search index. [0.1,0.2,0.3] is illustrative and requires a 3-dimensional index.",
+          "placeholder": "[0.1,0.2,0.3]"
         }
       ]
     },
     {
       "operation_id": "prepare_sources",
-      "title": "Prepare Sources",
+      "title": "RAG: Build cited context from search results",
       "fields": [
         {
           "name": "documents",
           "widget_type": "json",
-          "label": "Documents",
-          "required": true
+          "label": "Retrieved documents (JSON)",
+          "required": true,
+          "help_text": "Bind result.documents from Search or Vector search. Each item needs a source object containing text and optional source metadata; this is not an array of plain text strings.",
+          "placeholder": "[{\"document_id\":\"physical_id\",\"score\":0.9,\"source\":{\"text\":\"Refunds are accepted within 30 days.\",\"document_id\":\"manual_42\",\"chunk_id\":\"part_1\",\"source_uri\":\"https://example.com/manual\",\"title\":\"Refund policy\"}}]"
         }
       ]
     },
     {
       "operation_id": "finalize_answer",
-      "title": "Finalize Answer",
+      "title": "RAG: Validate answer citation IDs",
       "fields": [
         {
           "name": "answer",
           "widget_type": "textarea",
-          "label": "Answer",
-          "required": true
+          "label": "Generated answer with citation markers",
+          "required": true,
+          "help_text": "Bind the answer generated from the prepared context. Mark citations as [S1], [S2] and so on, matching Cited source IDs exactly.",
+          "placeholder": "Refund requests are accepted within 30 days. [S1]"
         },
         {
           "name": "cited_source_ids",
           "widget_type": "json",
-          "label": "Cited Source Ids",
-          "required": true
+          "label": "Cited source IDs (JSON)",
+          "required": true,
+          "help_text": "Array of source IDs used in the answer. The set must exactly match the answer’s [S1]-style markers and refer to the supplied sources.",
+          "placeholder": "[\"S1\"]"
         },
         {
           "name": "sources",
           "widget_type": "json",
-          "label": "Sources",
-          "required": true
+          "label": "Prepared sources (JSON)",
+          "required": true,
+          "help_text": "Bind result.sources from Build cited context. Preserve source_id and evidence fields; do not regenerate IDs after answer generation.",
+          "placeholder": "[{\"source_id\":\"S1\",\"text\":\"Refunds are accepted within 30 days.\",\"excerpt\":\"Refunds are accepted within 30 days.\"}]"
         },
         {
           "name": "abstained",
           "widget_type": "boolean",
-          "label": "Abstained",
-          "required": false
+          "label": "Answer model abstained",
+          "required": false,
+          "help_text": "Set true when evidence is insufficient. An abstention must have no citation markers or cited IDs. Empty sources always produce the fixed abstention answer.",
+          "placeholder": "false"
         }
       ]
     }

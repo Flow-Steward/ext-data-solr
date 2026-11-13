@@ -3,8 +3,8 @@
     {
       "action_id": "get_document",
       "workflow_visible": true,
-      "title": "Get Document",
-      "description": "Get document.",
+      "title": "Read a document by ID",
+      "description": "Read one document by its exact ID, returning only explicitly selected source fields.",
       "required_scopes": [
         "extension:invoke"
       ],
@@ -57,8 +57,8 @@
     {
       "action_id": "search",
       "workflow_visible": true,
-      "title": "Search",
-      "description": "Search.",
+      "title": "Search documents by text or filters",
+      "description": "Read up to 100 matching documents using the supported term, match, range and boolean query format. Select the source fields to return; no arbitrary query scripts are accepted.",
       "required_scopes": [
         "extension:invoke"
       ],
@@ -121,8 +121,8 @@
     {
       "action_id": "upsert_document",
       "workflow_visible": true,
-      "title": "Upsert Document",
-      "description": "Upsert document.",
+      "title": "Create or replace a complete document",
+      "description": "Save a document at a stable ID, creating it if missing and replacing its stored fields if present. Omitted fields are removed.",
       "required_scopes": [
         "extension:invoke"
       ],
@@ -174,8 +174,8 @@
     {
       "action_id": "upsert_documents",
       "workflow_visible": true,
-      "title": "Upsert Documents",
-      "description": "Replace 1\u2013100 documents by their actual unique key.",
+      "title": "Create or replace a batch of documents",
+      "description": "Save 1–100 complete Solr documents, each containing the collection’s actual unique-key field. Existing documents with those IDs are replaced.",
       "required_scopes": [
         "extension:invoke"
       ],
@@ -221,8 +221,8 @@
     {
       "action_id": "update_document",
       "workflow_visible": true,
-      "title": "Update Document",
-      "description": "Update document.",
+      "title": "Patch selected document fields",
+      "description": "Set the supplied fields on the selected document while preserving omitted fields. Supply plain field values, not scripts or update modifiers. Requires a reconstructable stored/docValues schema; the connector generates atomic set updates.",
       "required_scopes": [
         "extension:invoke"
       ],
@@ -274,8 +274,8 @@
     {
       "action_id": "delete_document",
       "workflow_visible": true,
-      "title": "Delete Document",
-      "description": "Delete document.",
+      "title": "Delete one document by ID",
+      "description": "Delete the exact document ID from the selected collection. Other documents remain stored.",
       "required_scopes": [
         "extension:invoke"
       ],
@@ -322,8 +322,8 @@
     {
       "action_id": "knn_search",
       "workflow_visible": true,
-      "title": "Knn Search",
-      "description": "Knn search.",
+      "title": "Vector: Search similar documents",
+      "description": "Retrieve up to 100 nearest documents using a supplied numeric embedding and optional supported filter. Use the same model and dimensions used to index the vector field; no embeddings are generated.",
       "required_scopes": [
         "extension:invoke"
       ],
@@ -391,8 +391,8 @@
     {
       "action_id": "prepare_chunk",
       "workflow_visible": true,
-      "title": "Prepare Chunk",
-      "description": "Prepare Chunk.",
+      "title": "RAG: Prepare a text fragment for indexing",
+      "description": "Build a document with text, source details and a supplied embedding, plus a stable physical ID derived from document and fragment IDs. Pass both outputs to Create or replace a complete document; this step does not write or generate embeddings.",
       "required_scopes": [
         "extension:invoke"
       ],
@@ -442,8 +442,8 @@
     {
       "action_id": "prepare_sources",
       "workflow_visible": true,
-      "title": "Prepare Sources",
-      "description": "Prepare Sources.",
+      "title": "RAG: Build cited context from search results",
+      "description": "Turn retrieved documents into bounded excerpts labeled S1, S2 and so on for an answer model. Pass the context to the model and retain sources for citation validation; this step does not generate an answer.",
       "required_scopes": [
         "extension:invoke"
       ],
@@ -469,8 +469,8 @@
     {
       "action_id": "finalize_answer",
       "workflow_visible": true,
-      "title": "Finalize Answer",
-      "description": "Finalize Answer.",
+      "title": "RAG: Validate answer citation IDs",
+      "description": "Check that answer markers such as [S1] match the cited IDs and supplied sources. Returns a fixed abstention when no evidence exists; checks citation syntax, not whether the answer follows from the text.",
       "required_scopes": [
         "extension:invoke"
       ],
