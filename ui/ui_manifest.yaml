@@ -3,6 +3,9 @@
   "pages": [
     {
       "ref": "pages/about.yaml"
+    },
+    {
+      "ref": "pages/support.yaml"
     }
   ]
 }

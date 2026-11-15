@@ -10,7 +10,7 @@ Create collections and schemas before connecting. Document fields must be flat s
 
 ## Runtime and operation requirements
 
-Standalone `flowsteward.solr` 1.0.4 provides exact-ID document CRUD, bounded
+Standalone `flowsteward.solr` 1.0.5 provides exact-ID document CRUD, bounded
 full-text search, supplied-vector retrieval, and native read-only Dataset/DataQuery
 queries. No triggers, schema administration, Solr server, Java runtime, or driver are
 bundled. Apache Solr is a trademark of The Apache Software Foundation; this
@@ -211,14 +211,14 @@ Pushes to `main` and pull requests run the shared extension build workflow. The 
 After the versioned release commit is on `main`, publish by pushing its version tag:
 
 ```sh
-git tag v1.0.4
-git push origin v1.0.4
+git tag v1.0.5
+git push origin v1.0.5
 ```
 
 The release workflow runs the shared checks, builds the target archives and publishes the GitHub release and checksums. Do not move an existing tag. To rerun a release for an existing tag, dispatch the same workflow:
 
 ```sh
-gh workflow run release.yml --repo Flow-Steward/ext-data-solr --ref main -f tag=v1.0.4
+gh workflow run release.yml --repo Flow-Steward/ext-data-solr --ref main -f tag=v1.0.5
 ```
 
 The manifest, descriptor (when present), package version and tag must identify the same release. Release publication uses the workflow token; no additional repository secret is required by these callers.
